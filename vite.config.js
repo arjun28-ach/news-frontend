@@ -17,7 +17,7 @@ export default defineConfig({
     host: true
   },
   build: {
-    outDir: '../static/dist',
+    outDir: 'dist',
     assetsDir: 'assets',
     manifest: true,
     rollupOptions: {
