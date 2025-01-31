@@ -35,14 +35,21 @@ export const AuthModal = ({ isOpen, onClose, type: initialType = 'login' }) => {
     setIsLoading(true);
     try {
       if (type === 'login') {
-        await authService.login(formData);
+        await authService.login({
+          username: formData.email,
+          password: formData.password
+        });
         toast({
           title: 'Login successful!',
           status: 'success',
           duration: 2000,
         });
       } else {
-        await authService.signup(formData);
+        await authService.signup({
+          username: formData.email,
+          password: formData.password,
+          name: formData.name
+        });
         toast({
           title: 'Sign up successful!',
           status: 'success',

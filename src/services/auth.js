@@ -74,5 +74,14 @@ export const authService = {
     } catch (error) {
       throw new Error(error.response?.data?.message || 'Failed to delete account');
     }
+  },
+
+  async googleLogin(idToken) {
+    try {
+      const { data } = await api.post('/accounts/google/', { id_token: idToken });
+      return data;
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Google login failed');
+    }
   }
 }; 

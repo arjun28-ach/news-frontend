@@ -36,7 +36,7 @@ export default defineConfig(({ command }) => ({
             '@chakra-ui/icons',
             'react-icons',
           ],
-        },
+        }
       }
     },
     chunkSizeWarningLimit: 1000,
