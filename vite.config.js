@@ -23,7 +23,7 @@ export default defineConfig(({ command }) => ({
     manifest: true,
     rollupOptions: {
       input: {
-        main: './src/main.jsx',
+        main: './index.html',
       },
     },
   },
