@@ -1,6 +1,6 @@
 {
-  "_NewsCard-Ci8iGuGP.js": {
-    "file": "assets/NewsCard-Ci8iGuGP.js",
+  "_NewsCard-6Iwi9m2y.js": {
+    "file": "assets/NewsCard-6Iwi9m2y.js",
     "name": "NewsCard",
     "imports": [
       "_vendor-DFkSgpX1.js",
@@ -19,7 +19,7 @@
     "name": "vendor"
   },
   "index.html": {
-    "file": "assets/index-BS6tLR-7.js",
+    "file": "assets/index-CljAXbJ3.js",
     "name": "index",
     "src": "index.html",
     "isEntry": true,
@@ -38,7 +38,7 @@
     ]
   },
   "src/components/AboutUs.jsx": {
-    "file": "assets/AboutUs-C9Xno-jw.js",
+    "file": "assets/AboutUs-Kh6AqQkG.js",
     "name": "AboutUs",
     "src": "src/components/AboutUs.jsx",
     "isDynamicEntry": true,
@@ -49,31 +49,31 @@
     ]
   },
   "src/components/Bookmarks.jsx": {
-    "file": "assets/Bookmarks-CF8ewH2n.js",
+    "file": "assets/Bookmarks-CuwFY3y1.js",
     "name": "Bookmarks",
     "src": "src/components/Bookmarks.jsx",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-DFkSgpX1.js",
-      "_NewsCard-Ci8iGuGP.js",
+      "_NewsCard-6Iwi9m2y.js",
       "index.html",
       "_ui-DRtG62At.js"
     ]
   },
   "src/components/NewsFeed.jsx": {
-    "file": "assets/NewsFeed-BrM2_RN6.js",
+    "file": "assets/NewsFeed-BZ3d4w1k.js",
     "name": "NewsFeed",
     "src": "src/components/NewsFeed.jsx",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-DFkSgpX1.js",
-      "_NewsCard-Ci8iGuGP.js",
+      "_NewsCard-6Iwi9m2y.js",
       "index.html",
       "_ui-DRtG62At.js"
     ]
   },
   "src/components/Profile.jsx": {
-    "file": "assets/Profile-Ce88r6ma.js",
+    "file": "assets/Profile-CH5hfi5E.js",
     "name": "Profile",
     "src": "src/components/Profile.jsx",
     "isDynamicEntry": true,
