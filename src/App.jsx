@@ -1,17 +1,13 @@
 import { ChakraProvider, Box } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { Header } from './components/Header';
-import { NewsFeed } from './components/NewsFeed';
-import { Bookmarks } from './components/Bookmarks';
-import Footer from './components/Footer';
 import ErrorBoundary from './components/ErrorBoundary';
 import theme from './theme';
 import { authService } from './services/auth';
-import { Profile } from './components/Profile';
-import { AboutUs } from './components/AboutUs';
 import { ScrollToTop } from './components/ScrollToTop';
+import Footer from './components/Footer';
 import Contact from './pages/Contact';
 
 const queryClient = new QueryClient({
@@ -23,6 +19,12 @@ const queryClient = new QueryClient({
     },
   },
 });
+
+// Lazy load components
+const NewsFeed = lazy(() => import('./components/NewsFeed'));
+const Bookmarks = lazy(() => import('./components/Bookmarks'));
+const Profile = lazy(() => import('./components/Profile'));
+const AboutUs = lazy(() => import('./components/AboutUs'));
 
 function App() {
   const [language, setLanguage] = useState('en');
@@ -81,44 +83,50 @@ function App() {
               >
                 <Box flex="1" width="100%" px={4} py={8}>
                   <Box maxW="1200px" mx="auto">
-                    <Routes>
-                      <Route 
-                        path="/" 
-                        element={
-                          <NewsFeed 
-                            language={language}
-                            isAuthenticated={isAuthenticated}
-                            onBookmarkUpdate={handleBookmarkUpdate}
-                          />
-                        } 
-                      />
-                      <Route 
-                        path="/bookmarks" 
-                        element={
-                          <Bookmarks 
-                            isAuthenticated={isAuthenticated}
-                            onBookmarkUpdate={handleBookmarkUpdate}
-                          />
-                        } 
-                      />
-                      <Route 
-                        path="/profile" 
-                        element={
-                          <Profile 
-                            isAuthenticated={isAuthenticated}
-                            user={user}
-                          />
-                        } 
-                      />
-                      <Route 
-                        path="/about" 
-                        element={<AboutUs />} 
-                      />
-                      <Route 
-                        path="/contact" 
-                        element={<Contact />} 
-                      />
-                    </Routes>
+                    <Suspense fallback={
+                      <Box display="flex" justifyContent="center" alignItems="center" minH="200px">
+                        Loading...
+                      </Box>
+                    }>
+                      <Routes>
+                        <Route 
+                          path="/" 
+                          element={
+                            <NewsFeed 
+                              language={language}
+                              isAuthenticated={isAuthenticated}
+                              onBookmarkUpdate={handleBookmarkUpdate}
+                            />
+                          } 
+                        />
+                        <Route 
+                          path="/bookmarks" 
+                          element={
+                            <Bookmarks 
+                              isAuthenticated={isAuthenticated}
+                              onBookmarkUpdate={handleBookmarkUpdate}
+                            />
+                          } 
+                        />
+                        <Route 
+                          path="/profile" 
+                          element={
+                            <Profile 
+                              isAuthenticated={isAuthenticated}
+                              user={user}
+                            />
+                          } 
+                        />
+                        <Route 
+                          path="/about" 
+                          element={<AboutUs />} 
+                        />
+                        <Route 
+                          path="/contact" 
+                          element={<Contact />} 
+                        />
+                      </Routes>
+                    </Suspense>
                   </Box>
                 </Box>
                 <Footer />

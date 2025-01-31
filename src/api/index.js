@@ -10,7 +10,8 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: true
+  withCredentials: true,
+  timeout: 10000
 });
 
 // Add request interceptor for CSRF token
@@ -28,26 +29,24 @@ api.interceptors.request.use(request => {
   return request;
 });
 
-// Add response interceptor for debugging
+// Update the response interceptor for better error handling
 api.interceptors.response.use(
   response => response,
   error => {
     if (!error.response) {
-      console.error('API Connection Error: Unable to reach the API server. Please ensure the backend server is running.');
-      console.error('Error details:', error.message);
-    } else if (error.response.status === 404) {
-      console.error('API not found:', {
-        url: error.config.url,
-        method: error.config.method,
-        baseURL: error.config.baseURL,
-        fullURL: error.config.baseURL + error.config.url
+      console.error('API Connection Error:', {
+        message: error.message,
+        code: error.code,
+        config: error.config
       });
     } else {
       console.error('API Error:', {
         status: error.response.status,
         statusText: error.response.statusText,
+        data: error.response.data,
         url: error.config.url,
-        method: error.config.method
+        method: error.config.method,
+        headers: error.config.headers
       });
     }
     return Promise.reject(error);

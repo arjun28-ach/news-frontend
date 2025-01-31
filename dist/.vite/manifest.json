@@ -1,11 +1,86 @@
 {
-  "src/main.jsx": {
-    "file": "assets/main-B4NVRYk_.js",
-    "name": "main",
-    "src": "src/main.jsx",
+  "_NewsCard-Ci8iGuGP.js": {
+    "file": "assets/NewsCard-Ci8iGuGP.js",
+    "name": "NewsCard",
+    "imports": [
+      "_vendor-DFkSgpX1.js",
+      "index.html"
+    ]
+  },
+  "_ui-DRtG62At.js": {
+    "file": "assets/ui-DRtG62At.js",
+    "name": "ui",
+    "imports": [
+      "_vendor-DFkSgpX1.js"
+    ]
+  },
+  "_vendor-DFkSgpX1.js": {
+    "file": "assets/vendor-DFkSgpX1.js",
+    "name": "vendor"
+  },
+  "index.html": {
+    "file": "assets/index-BS6tLR-7.js",
+    "name": "index",
+    "src": "index.html",
     "isEntry": true,
+    "imports": [
+      "_vendor-DFkSgpX1.js",
+      "_ui-DRtG62At.js"
+    ],
+    "dynamicImports": [
+      "src/components/NewsFeed.jsx",
+      "src/components/Bookmarks.jsx",
+      "src/components/Profile.jsx",
+      "src/components/AboutUs.jsx"
+    ],
     "css": [
-      "assets/main-VEw8W93j.css"
+      "assets/index-VEw8W93j.css"
+    ]
+  },
+  "src/components/AboutUs.jsx": {
+    "file": "assets/AboutUs-C9Xno-jw.js",
+    "name": "AboutUs",
+    "src": "src/components/AboutUs.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-DFkSgpX1.js",
+      "index.html",
+      "_ui-DRtG62At.js"
+    ]
+  },
+  "src/components/Bookmarks.jsx": {
+    "file": "assets/Bookmarks-CF8ewH2n.js",
+    "name": "Bookmarks",
+    "src": "src/components/Bookmarks.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-DFkSgpX1.js",
+      "_NewsCard-Ci8iGuGP.js",
+      "index.html",
+      "_ui-DRtG62At.js"
+    ]
+  },
+  "src/components/NewsFeed.jsx": {
+    "file": "assets/NewsFeed-BrM2_RN6.js",
+    "name": "NewsFeed",
+    "src": "src/components/NewsFeed.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-DFkSgpX1.js",
+      "_NewsCard-Ci8iGuGP.js",
+      "index.html",
+      "_ui-DRtG62At.js"
+    ]
+  },
+  "src/components/Profile.jsx": {
+    "file": "assets/Profile-Ce88r6ma.js",
+    "name": "Profile",
+    "src": "src/components/Profile.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-DFkSgpX1.js",
+      "index.html",
+      "_ui-DRtG62At.js"
     ]
   }
 }
