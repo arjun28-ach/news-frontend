@@ -27,7 +27,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { FaMoon, FaSun, FaBookmark, FaUser, FaBars, FaChevronDown, FaSignOutAlt } from 'react-icons/fa';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useNavigate, useLocation } from 'react-router-dom';
 import { authService } from '../services/auth';
 import { AuthModal } from './AuthModal';
 import { Logo } from './Logo';
@@ -45,6 +45,7 @@ export const Header = ({ isAuthenticated, user, onLanguageChange, bookmarkCount 
   const [authType, setAuthType] = useState('login');
   const isMobile = useBreakpointValue({ base: true, md: false });
   const navigate = useNavigate();
+  const location = useLocation();
 
   const bgGradient = colorMode === 'light'
     ? 'linear(to-r, nepal.red, nepal.blue)'
@@ -66,19 +67,36 @@ export const Header = ({ isAuthenticated, user, onLanguageChange, bookmarkCount 
     onAuthOpen();
   };
 
-  const MobileNavItem = ({ label, children, href, onClick }) => {
+  const MobileNavItem = ({ label, children, href, onClick, onMobileMenuToggle }) => {
     const { isOpen, onToggle } = useDisclosure();
+    const location = useLocation();
+    const isActive = href && location.pathname === href;
+    const { colorMode } = useColorMode();
+    const buttonHoverBg = colorMode === 'light' ? 'whiteAlpha.200' : 'whiteAlpha.100';
+
+    const handleClick = (e) => {
+      if (onClick) {
+        onClick();
+        onMobileMenuToggle(); // Close mobile menu after action
+      } else if (href) {
+        onMobileMenuToggle(); // Close mobile menu when navigating
+      }
+    };
 
     return (
-      <Stack spacing={4} onClick={children ? onToggle : onClick}>
+      <Stack spacing={4} onClick={handleClick}>
         <Flex
           py={2}
           as={href ? RouterLink : 'div'}
           to={href ?? '#'}
           justify={'space-between'}
           align={'center'}
+          bg={isActive ? buttonHoverBg : 'transparent'}
+          px={3}
+          borderRadius="md"
           _hover={{
             textDecoration: 'none',
+            bg: buttonHoverBg,
           }}
         >
           <Text
@@ -87,36 +105,7 @@ export const Header = ({ isAuthenticated, user, onLanguageChange, bookmarkCount 
           >
             {label}
           </Text>
-          {children && (
-            <Icon
-              as={ChevronDownIcon}
-              transition={'all .25s ease-in-out'}
-              transform={isOpen ? 'rotate(180deg)' : ''}
-              w={6}
-              h={6}
-            />
-          )}
         </Flex>
-
-        <Collapse in={isOpen} animateOpacity style={{ marginTop: '0!important' }}>
-          <Stack
-            mt={2}
-            pl={4}
-            borderLeft={1}
-            borderStyle={'solid'}
-            borderColor={'whiteAlpha.300'}
-            align={'start'}
-          >
-            {children &&
-              children.map((child) => (
-                <RouterLink key={child.label} to={child.href}>
-                  <Text py={2} color={'white'}>
-                    {child.label}
-                  </Text>
-                </RouterLink>
-              ))}
-          </Stack>
-        </Collapse>
       </Stack>
     );
   };
@@ -281,7 +270,11 @@ export const Header = ({ isAuthenticated, user, onLanguageChange, bookmarkCount 
             >
               <Stack spacing={4}>
                 {NAV_ITEMS.map((navItem) => (
-                  <MobileNavItem key={navItem.label} {...navItem} />
+                  <MobileNavItem 
+                    key={navItem.label} 
+                    {...navItem} 
+                    onMobileMenuToggle={onMobileMenuToggle}
+                  />
                 ))}
                 
                 <MobileNavItem
@@ -290,11 +283,13 @@ export const Header = ({ isAuthenticated, user, onLanguageChange, bookmarkCount 
                     { label: 'English', href: '#', onClick: () => onLanguageChange('en') },
                     { label: 'नेपाली', href: '#', onClick: () => onLanguageChange('np') }
                   ]}
+                  onMobileMenuToggle={onMobileMenuToggle}
                 />
                 
                 <MobileNavItem
                   label="Theme"
                   onClick={toggleColorMode}
+                  onMobileMenuToggle={onMobileMenuToggle}
                 />
 
                 {isAuthenticated ? (
@@ -302,25 +297,36 @@ export const Header = ({ isAuthenticated, user, onLanguageChange, bookmarkCount 
                     <MobileNavItem
                       label="Bookmarks"
                       href="/bookmarks"
+                      onMobileMenuToggle={onMobileMenuToggle}
                     />
                     <MobileNavItem
                       label="Profile"
                       href="/profile"
+                      onMobileMenuToggle={onMobileMenuToggle}
                     />
                     <MobileNavItem
                       label="Logout"
                       onClick={handleLogout}
+                      onMobileMenuToggle={onMobileMenuToggle}
                     />
                   </>
                 ) : (
                   <>
                     <MobileNavItem
                       label="Login"
-                      onClick={() => handleAuthClick('login')}
+                      onClick={() => {
+                        handleAuthClick('login');
+                        onMobileMenuToggle();
+                      }}
+                      onMobileMenuToggle={onMobileMenuToggle}
                     />
                     <MobileNavItem
                       label="Sign Up"
-                      onClick={() => handleAuthClick('signup')}
+                      onClick={() => {
+                        handleAuthClick('signup');
+                        onMobileMenuToggle();
+                      }}
+                      onMobileMenuToggle={onMobileMenuToggle}
                     />
                   </>
                 )}
@@ -341,82 +347,96 @@ export const Header = ({ isAuthenticated, user, onLanguageChange, bookmarkCount 
 
 const DesktopNav = () => {
   const { colorMode } = useColorMode();
-  const popoverContentBgColor = useColorModeValue('white', 'gray.800');
+  const buttonHoverBg = colorMode === 'light' ? 'whiteAlpha.200' : 'whiteAlpha.100';
+  const location = useLocation();
 
   return (
     <Stack direction={'row'} spacing={4}>
-      {NAV_ITEMS.map((navItem) => (
-        <Box key={navItem.label}>
-          <Popover trigger={'hover'} placement={'bottom-start'}>
-            <PopoverTrigger>
-              <Box
-                as={RouterLink}
-                to={navItem.href ?? '#'}
-                p={2}
-                fontSize={'sm'}
-                fontWeight={500}
-                color={'white'}
-                _hover={{
-                  textDecoration: 'none',
-                  color: colorMode === 'light' ? 'nepal.darkRed' : 'nepal.darkBlue',
-                }}
-              >
-                {navItem.label}
-              </Box>
-            </PopoverTrigger>
+      {NAV_ITEMS.map((navItem) => {
+        const isActive = location.pathname === navItem.href;
+        
+        return (
+          <Box key={navItem.label}>
+            <Popover trigger={'hover'} placement={'bottom-start'}>
+              <PopoverTrigger>
+                <Button
+                  as={RouterLink}
+                  to={navItem.href ?? '#'}
+                  variant="ghost"
+                  color="white"
+                  bg={isActive ? buttonHoverBg : 'transparent'}
+                  _hover={{ bg: buttonHoverBg }}
+                  position="relative"
+                  rightIcon={navItem.children ? <ChevronDownIcon /> : undefined}
+                  _after={{
+                    content: '""',
+                    position: 'absolute',
+                    bottom: '0',
+                    left: '0',
+                    right: '0',
+                    height: '2px',
+                    bg: 'white',
+                    opacity: isActive ? 1 : 0,
+                    transition: 'opacity 0.2s'
+                  }}
+                >
+                  {navItem.label}
+                </Button>
+              </PopoverTrigger>
 
-            {navItem.children && (
-              <PopoverContent
-                border={0}
-                boxShadow={'xl'}
-                bg={popoverContentBgColor}
-                p={4}
-                rounded={'xl'}
-                minW={'sm'}
-              >
-                <Stack>
-                  {navItem.children.map((child) => (
-                    <Box
-                      key={child.label}
-                      as={RouterLink}
-                      to={child.href}
-                      role={'group'}
-                      display={'block'}
-                      p={2}
-                      rounded={'md'}
-                      _hover={{ bg: useColorModeValue('nepal.red', 'nepal.darkRed') }}
-                    >
-                      <Stack direction={'row'} align={'center'}>
-                        <Box>
-                          <Text
+              {navItem.children && (
+                <PopoverContent
+                  border={0}
+                  boxShadow={'xl'}
+                  bg={colorMode === 'light' ? 'white' : 'gray.800'}
+                  p={4}
+                  rounded={'xl'}
+                  minW={'sm'}
+                >
+                  <Stack>
+                    {navItem.children.map((child) => (
+                      <Box
+                        key={child.label}
+                        as={RouterLink}
+                        to={child.href}
+                        role={'group'}
+                        display={'block'}
+                        p={2}
+                        rounded={'md'}
+                        _hover={{ bg: useColorModeValue('nepal.red', 'nepal.darkRed') }}
+                      >
+                        <Stack direction={'row'} align={'center'}>
+                          <Box>
+                            <Text
+                              transition={'all .3s ease'}
+                              _groupHover={{ color: 'white' }}
+                              fontWeight={500}
+                            >
+                              {child.label}
+                            </Text>
+                            <Text fontSize={'sm'}>{child.subLabel}</Text>
+                          </Box>
+                          <Flex
                             transition={'all .3s ease'}
-                            _groupHover={{ color: 'white' }}
-                            fontWeight={500}
+                            transform={'translateX(-10px)'}
+                            opacity={0}
+                            _groupHover={{ opacity: '100%', transform: 'translateX(0)' }}
+                            justify={'flex-end'}
+                            align={'center'}
+                            flex={1}
                           >
-                            {child.label}
-                          </Text>
-                          <Text fontSize={'sm'}>{child.subLabel}</Text>
-                        </Box>
-                        <Flex
-                          transition={'all .3s ease'}
-                          transform={'translateX(-10px)'}
-                          opacity={0}
-                          _groupHover={{ opacity: '100%', transform: 'translateX(0)' }}
-                          justify={'flex-end'}
-                          align={'center'}
-                          flex={1}
-                        >
-                          <Icon color={'white'} w={5} h={5} as={ChevronRightIcon} />
-                        </Flex>
-                      </Stack>
-                    </Box>
-                  ))}
-                </Stack>
-              </PopoverContent>
-            )}
-          </Popover>
-        </Box>
-      ))}
+                            <Icon color={'white'} w={5} h={5} as={ChevronRightIcon} />
+                          </Flex>
+                        </Stack>
+                      </Box>
+                    ))}
+                  </Stack>
+                </PopoverContent>
+              )}
+            </Popover>
+          </Box>
+        );
+      })}
     </Stack>
   );
 };

@@ -8,8 +8,9 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://newsbackend-4so0.onrender.com',
+        target: process.env.VITE_API_URL || 'http://localhost:8000',
         changeOrigin: true,
+        secure: false,
       }
     },
     port: 5173,

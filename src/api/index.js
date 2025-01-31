@@ -28,8 +28,23 @@ api.interceptors.request.use(request => {
 api.interceptors.response.use(
   response => response,
   error => {
-    if (error.response?.status === 404) {
-      console.error('API not found:', error.config.url);
+    if (!error.response) {
+      console.error('API Connection Error: Unable to reach the API server. Please ensure the backend server is running.');
+      console.error('Error details:', error.message);
+    } else if (error.response.status === 404) {
+      console.error('API not found:', {
+        url: error.config.url,
+        method: error.config.method,
+        baseURL: error.config.baseURL,
+        fullURL: error.config.baseURL + error.config.url
+      });
+    } else {
+      console.error('API Error:', {
+        status: error.response.status,
+        statusText: error.response.statusText,
+        url: error.config.url,
+        method: error.config.method
+      });
     }
     return Promise.reject(error);
   }
