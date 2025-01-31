@@ -1,8 +1,12 @@
 import axios from 'axios';
 import { getCookie } from '../utils/cookies';
 
+const baseURL = import.meta.env.PROD 
+  ? 'https://newsbackend-4so0.onrender.com/api'
+  : '/api';
+
 const api = axios.create({
-  baseURL: '/api',
+  baseURL,
   headers: {
     'Content-Type': 'application/json',
   },
