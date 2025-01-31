@@ -5,7 +5,7 @@ import { useState, useEffect, lazy, Suspense } from 'react';
 import { Header } from './components/Header';
 import ErrorBoundary from './components/ErrorBoundary';
 import theme from './theme';
-import { authService, initGoogleAuth } from './services/auth';
+import { authService } from './services/auth';
 import { ScrollToTop } from './components/ScrollToTop';
 import Footer from './components/Footer';
 import Contact from './pages/Contact';
@@ -57,10 +57,6 @@ function App() {
       }
     };
     checkAuth();
-  }, []);
-
-  useEffect(() => {
-    initGoogleAuth();
   }, []);
 
   const handleBookmarkUpdate = () => {
