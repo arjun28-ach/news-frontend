@@ -37,9 +37,6 @@ export default defineConfig(({ command }) => ({
             'react-icons',
           ],
         },
-        chunkFileNames: 'assets/[name]-[hash].js',
-        entryFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash].[ext]'
       }
     },
     chunkSizeWarningLimit: 1000,
