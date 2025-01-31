@@ -2,33 +2,12 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/logo.png" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NewsNepal</title>
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <meta name="google-signin-client_id" content="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com">
+    <title>News App</title>
   </head>
   <body>
     <div id="root"></div>
-    <script>
-      // Add this to handle initial color mode
-      let colorMode = localStorage.getItem('chakra-ui-color-mode');
-      if (!colorMode) {
-        colorMode = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        localStorage.setItem('chakra-ui-color-mode', colorMode);
-      }
-      document.documentElement.style.setProperty('color-scheme', colorMode);
-    </script>
     <script type="module" src="/src/main.jsx"></script>
-    <script>
-      function initGoogleAuth() {
-        gapi.load('auth2', function() {
-          gapi.auth2.init({
-            client_id: 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com'
-          });
-        });
-      }
-    </script>
-    <script src="https://apis.google.com/js/platform.js?onload=initGoogleAuth" async defer></script>
   </body>
 </html>
